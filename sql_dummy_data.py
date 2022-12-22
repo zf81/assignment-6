@@ -69,8 +69,7 @@ cpt_codes_1k = cpt_codes.sample(n=1000, random_state=1)
 cpt_codes_1k = cpt_codes.drop_duplicates(subset=['com.medigy.persist.reference.type.clincial.CPT.code'], keep='first')
 
 ####real loinc codes
-loinc_codes = pd.read_csv('enter LOINC')
-
+loinc_codes = pd.read_csv('https://raw.githubusercontent.com/zf81/assignment-6/main/LOINC.csv')
 
 ########## INSERTING IN FAKE PATIENTS ##########
 insertQuery = "INSERT INTO patients (mrn, first_name, last_name, dob, gender, zip_code, city, state, phone_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
