@@ -64,7 +64,7 @@ ndc_codes_1k = ndc_codes.sample(n=1000, random_state=1)
 ndc_codes_1k = ndc_codes_1k.drop_duplicates(subset=['PRODUCTNDC'], keep='first')
 
 #### real cpt codes
-cpt_codes = pd.read_csv('ENTER CSV')
+cpt_codes = pd.read_csv('https://raw.githubusercontent.com/zf81/assignment-6/main/cpt_codes.csv')
 cpt_codes_1k = cpt_codes.sample(n=1000, random_state=1)
 cpt_codes_1k = cpt_codes.drop_duplicates(subset=['com.medigy.persist.reference.type.clincial.CPT.code'], keep='first')
 
