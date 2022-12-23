@@ -1,14 +1,13 @@
-# Import packages
+#import packages
 import dbm
 import pandas as pd 
 import sqlalchemy
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
-from faker import Faker
-import uuid
-import random
+from faker import Faker 
 
+### drop the old tables
 def droppingFunction_all(dbList, db_source):
     for table in dbList:
         db_source.execute(f'drop table {table}')
@@ -16,17 +15,19 @@ def droppingFunction_all(dbList, db_source):
     else:
         print(f'kept table {table}')
 
+
+#get login credentials from env
 load_dotenv()
 AZURE_MYSQL_HOSTNAME = os.getenv("AZURE_MYSQL_HOSTNAME")
-AZURE_MYSQL_USER = os.getenv("AZURE_MYSQL_USERNAME")
+AZURE_MYSQL_USER = os.getenv("AZURE_MYSQL_USER")
 AZURE_MYSQL_PASSWORD = os.getenv("AZURE_MYSQL_PASSWORD")
 AZURE_MYSQL_DATABASE = os.getenv("AZURE_MYSQL_DATABASE")
 
-connection_string_azure = f'mysql+pymysql://{AZURE_MYSQL_USER}:{AZURE_MYSQL_PASSWORD}@{AZURE_MYSQL_HOSTNAME}:3306/{AZURE_MYSQL_DATABASE}'
-db_azure = create_engine(connection_string_azure)
+#connecting to mysql 
+connection_string = f'mysql+pymysql://{AZURE_MYSQL_USER}:{AZURE_MYSQL_PASSWORD}@{AZURE_MYSQL_HOSTNAME}:3306/{AZURE_MYSQL_DATABASE}'
+db_azure = create_engine(connection_string)
 
 #### note to self, need to ensure server_paremters => require_secure_transport is OFF in Azure 
-
 ### show tables from databases
 
 tableNames_azure = db_azure.table_names()
@@ -36,6 +37,7 @@ tableNames_azure = ['medications','conditions', 'social_determinants','treatment
 
 # ### delete everything 
 droppingFunction_all(tableNames_azure, db_azure)
+
 
 #### first step below is just creating a basic version of each of the tables,
 #### along with the primary keys and default values 
@@ -62,14 +64,17 @@ create table if not exists conditions (
 ); 
 """
 
+
 table_social_determinants = """
 create table if not exists social_determinants (
     id int auto_increment,
     loinc_code varchar(255) default null unique,
     loinc_code_description varchar(255) default null,
     PRIMARY KEY (id)
+
 ); 
 """
+
 
 table_treatments_procedures = """
 create table if not exists treatments_procedures (
@@ -78,6 +83,7 @@ create table if not exists treatments_procedures (
     cpt_code_description varchar(255) default null,
     PRIMARY KEY (id)
     
+
 ); 
 """
 
@@ -87,14 +93,14 @@ create table if not exists patients (
     mrn varchar(255) default null unique,
     first_name varchar(255) default null,
     last_name varchar(255) default null,
+    zip_code varchar(255) default null,
     dob varchar(255) default null,
     gender varchar(255) default null,
-    city varchar(255) default null,
-    state varchar(255) default null,
-    phone_number varchar(255) default null,
-    zip_code varchar(255) default null
-    PRIMARY KEY (id)   
-); """
+    contact_mobile varchar(255) default null,
+    contact_home varchar(255) default null,
+    PRIMARY KEY (id) 
+); 
+"""
 
 table_patient_summary = """
 create table if not exists patient_summary (
@@ -130,6 +136,7 @@ create table if not exists patient_medications (
     FOREIGN KEY (med_ndc) REFERENCES medications(med_ndc) ON DELETE CASCADE
 ); 
 """
+
 
 #execute tables
 db_azure.execute(table_patients)

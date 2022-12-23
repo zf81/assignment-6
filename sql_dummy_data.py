@@ -48,6 +48,7 @@ df_fake_patients = pd.DataFrame(fake_patients)
 # drop duplicate mrn
 df_fake_patients = df_fake_patients.drop_duplicates(subset=['mrn'])
 
+
 #### real icd10 codes
 icd10codes = pd.read_csv('https://raw.githubusercontent.com/Bobrovskiy/ICD-10-CSV/master/2020/diagnosis.csv')
 list(icd10codes.columns)
@@ -81,8 +82,6 @@ for index, row in df_fake_patients.iterrows():
 
 # # query dbs to see if data is there
 df_azure = pd.read_sql_query("SELECT * FROM patients", db_azure)
-
-
 
 ########## INSERTING IN CONDITIONS ##########
 insertQuery = "INSERT INTO conditions (icd10_code, icd10_description) VALUES (%s, %s)"
