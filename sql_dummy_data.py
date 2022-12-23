@@ -14,7 +14,7 @@ import cryptography
 load_dotenv()
 
 AZURE_MYSQL_HOSTNAME = os.getenv("AZURE_MYSQL_HOSTNAME")
-AZURE_MYSQL_USER = os.getenv("AZURE_MYSQL_USERNAME")
+AZURE_MYSQL_USER = os.getenv("AZURE_MYSQL_USER")
 AZURE_MYSQL_PASSWORD= os.getenv("AZURE_MYSQL_PASSWORD")
 AZURE_MYSQL_DATABASE = os.getenv("AZURE_MYSQL_DATABASE")
 
@@ -74,7 +74,6 @@ loinc_codes = pd.read_csv('https://raw.githubusercontent.com/zf81/assignment-6/m
 
 ########## INSERTING IN FAKE PATIENTS ##########
 insertQuery = "INSERT INTO patients (mrn, first_name, last_name, dob, gender, zip_code, city, state, phone_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-
 
 for index, row in df_fake_patients.iterrows():
     db_azure.execute(insertQuery, (row['mrn'], row['first_name'], row['last_name'],row['dob'], row['gender'], row['zip_code'], row['city'], row['state'], row['phone_number']))
